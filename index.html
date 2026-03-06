@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第四課：與同事的日常交流 - N4~N3 日語會話</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        /* 1. THE SETUP & PRESENTATION MODE */
+        * { box-sizing: border-box; }
+        
+        body {
+            background-color: #333; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden; 
+        }
+
+        .presentation-container {
+            position: relative;
+            width: 1280px;
+            height: 720px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+
+        .slide-container {
+            display: flex; 
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none; 
+            background-color: #ffffff;
+            align-items: center;
+            box-sizing: border-box;
+            flex-direction: column;
+            font-family: "Zen Kaku Gothic New", sans-serif;
+            gap: 25px; 
+            height: 100%;
+            justify-content: center;
+            padding: 30px 40px; 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .slide-container.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .slide-container > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- 控制按鈕樣式 --- */
+        .controls {
+            position: absolute;
+            bottom: 30px; 
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            z-index: 10000; 
+            background-color: rgba(0, 80, 136, 0.9);
+            padding: 10px 25px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .controls button {
+            background-color: #11caa0;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: "Zen Kaku Gothic New", sans-serif;
+            font-weight: 700;
+            transition: background-color 0.2s;
+        }
+
+        .controls button:hover {
+            background-color: #0eab86;
+        }
+
+        .controls button:disabled {
+            background-color: #64748b;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .slide-counter {
+            color: #fff;
+            font-family: "Zen Kaku Gothic New", sans-serif;
+            font-size: 18px;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        /* --- 排版樣式 --- */
+        .main-content { display: grid; gap: 16px; place-content: center; width: 100%; }
+
+        ruby { ruby-align: center; }
+        rt { font-size: 0.75em; color: inherit; opacity: 0.95; transform: translateY(-8%); font-weight: 500; }
+
+        .answer-text {
+            color: #e63946; font-weight: 700; background-color: #fff0f0;
+            padding: 0 10px; border-radius: 4px; border-bottom: 2px solid #e63946;
+        }
+        
+        .answer-badge {
+            background-color: #e63946; color: #ffffff; font-size: 20px;
+            padding: 4px 12px; border-radius: 20px; vertical-align: middle;
+            margin-left: 15px; font-weight: 700; display: inline-block;
+        }
+
+        .slide-container h1, .slide-container h2, .slide-container h3, .slide-title { font-weight: 700; margin: 0; color: #005088; }
+        .slide-container h1 { font-size: 56px; line-height: 1.2; letter-spacing: 2px; text-align: center; }
+        .slide-container h2.slide-title {
+            font-size: 42px; line-height: 1.2; letter-spacing: 1px;
+            margin-bottom: 15px; width: 100%; text-align: left;
+            border-bottom: 2px solid #11caa0; padding-bottom: 10px;
+        }
+        .slide-container h3 { font-size: 28px; margin-bottom: 10px; }
+        .slide-container p, .slide-container li, .slide-container .subtitle {
+            font-size: 20px; line-height: 1.8; color: #334155; margin-top: 5px; margin-bottom: 5px;
+        }
+        .slide-container .subtitle { font-size: 24px; font-weight: 400; margin-top: 15px; text-align: center; }
+        .cn-translation { color: #64748b !important; font-size: 16px !important; margin-top: 0px !important; margin-bottom: 5px !important; }
+
+        .content-area { align-items: center; display: flex; flex-direction: column; flex-grow: 1; justify-content: center; width: 100%; }
+
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 100%; align-items: center; }
+        .two-column ul { list-style: none; margin: 0; padding-left: 0; }
+        .two-column li { margin-bottom: 10px; position: relative; padding-left: 30px; }
+        .two-column li i { position: absolute; left: 0; top: 5px; color: #11caa0; }
+
+        .image-wrapper { border-radius: 12px; height: 320px; overflow: hidden; width: 100%; border: 2px solid #005088; display:flex; align-items:center; justify-content:center; background-color:#f0f4f8; }
+        .image-wrapper svg { width: 100%; height: 100%; object-fit: cover; }
+        
+        .tiled-content { align-items: stretch; display: flex; gap: 20px; width: 100%; justify-content: center; }
+        .tile {
+            align-items: center; background-color: #005088; border-radius: 12px; display: flex;
+            flex-direction: column; flex: 1; padding: 20px 15px; text-align: center; border: 2px solid #11caa0;
+        }
+        .tile .icon { color: #11caa0; font-size: 40px; margin-bottom: 10px; }
+        .tile p, .tile h3 { color: #f3f0df; }
+        .tile .cn-translation { color: #cbd5e1 !important; }
+
+        .two-column.tiled > div { background-color: #f0f4f8; border-radius: 12px; border: 2px solid #005088; padding: 25px; }
+        .two-column.tiled h3 { color: #005088; border-bottom: 2px solid #11caa0; padding-bottom: 10px; margin-top: 0; }
+
+        .rounded-image-layout .image-wrapper { border-radius: 50%; flex-shrink: 0; height: 280px; width: 280px; max-width: 280px; margin: 0 auto; border: 4px solid #11caa0; background-color:#f0f4f8; overflow:hidden;}
+
+        .highlight-numbers-layout > div:first-child { flex: 0 0 40%; text-align: center; }
+        .highlight-numbers-layout .number { color: #11caa0; font-size: 80px; font-weight: 700; line-height: 1.2; }
+        .highlight-numbers-layout .number-label { font-size: 26px; font-weight: 700; color: #005088; margin-top: 10px; }
+
+        .slide-container.bleed-image-layout { align-items: start; display: grid; gap: 40px; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0; }
+        .slide-container.bleed-image-layout > .content-container { padding: 40px 0 40px 40px; display: flex; flex-direction: column; justify-content: center; height: 100%; }
+        .slide-container.bleed-image-layout > .image-container { height: 100%; overflow: hidden; width: 100%; background-color:#f0f4f8; display:flex;}
+        .slide-container.bleed-image-layout svg.bleed-image-side { border-radius: 0; display: block; height: 720px; width: 100%; object-fit: cover;}
+
+        .bullet-list { max-width: 900px; width: 100%; }
+        .bullet-list ul { list-style: none; margin: 0; padding: 0; }
+        .bullet-list li { gap: 15px; margin-bottom: 15px; padding-left: 50px; position: relative; }
+        .bullet-list i { color: #11caa0; font-size: 24px; left: 0; margin-top: 5px; position: absolute; text-align: center; top: 0; }
+
+        .qa-layout { margin: 0 auto; text-align: center; width: 100%; align-self: center; }
+        .qa-layout h2 { font-size: 60px; margin-bottom: 10px; color: #11caa0; }
+        .qa-layout p { font-size: 24px; }
+        .qa-layout .contact-info { color: #005088; font-size: 22px; margin-top: 25px; padding: 15px; border-top: 2px dashed #11caa0; }
+
+        .section-title-layout { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; text-align: center; width: 100%; }
+        .section-title-layout h2 { font-size: 50px; margin-bottom: 15px; color: #11caa0; }
+        .section-title-layout hr { background-color: #005088; border: none; height: 5px; margin: 20px auto; width: 150px; }
+
+        .dialog-line { margin-bottom: 15px; line-height: 1.8; } 
+        .dialog-speaker { font-weight: 700; color: #11caa0; }
+        .highlight-text { color: #11caa0; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+<div class="presentation-container">
+
+    <!-- Slide 1: Title_Slide -->
+    <div class="slide-container active" id="slide1">
+        <div class="content-area title-layout">
+            <h1 style="color: #11caa0;">N4~N3 <ruby>実<rt>じつ</rt></ruby><ruby>践<rt>せん</rt></ruby><ruby>日<rt>に</rt></ruby><ruby>本<rt>ほん</rt></ruby><ruby>語<rt>ご</rt></ruby></h1>
+            <hr style="background-color: #005088; border: none; height: 3px; margin: 20px auto; width: 200px;">
+            <h1><ruby>第<rt>だい</rt></ruby>4<ruby>課<rt>か</rt></ruby>：<ruby>同僚<rt>どうりょう</rt></ruby>とのコミュニケーション</h1>
+            <p class="subtitle cn-translation">( 第四課：與同事的日常交流 - 約吃飯、借東西 )</p>
+            <div style="margin-top: 20px; text-align: left; background: #f0f4f8; padding: 15px 30px; border-radius: 12px; border-left: 5px solid #11caa0;">
+                <p style="margin: 0; font-weight: 700; color:#11caa0;">[ ターゲット / 學習目標 ]</p>
+                <ol style="margin-top: 5px; margin-bottom: 0; font-size: 20px;">
+                    <li>ランチに<ruby>誘<rt>さそ</rt></ruby>う <span class="cn-translation">(邀請同事吃午餐)</span></li>
+                    <li><ruby>物<rt>もの</rt></ruby>を<ruby>借<rt>か</rt></ruby>りる・お<ruby>願<rt>ねが</rt></ruby>いする <span class="cn-translation">(借用物品與請求幫忙)</span></li>
+                    <li><ruby>軽<rt>かる</rt></ruby>い<ruby>許可<rt>きょか</rt></ruby>と<ruby>提案<rt>ていあん</rt></ruby> <span class="cn-translation">(輕鬆的許可與提議)</span></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Warm-up -->
+    <div class="slide-container" id="slide2">
+        <h2 class="slide-title">ウォームアップ <span class="cn-translation">(暖身互動)</span></h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <h3><ruby>質問<rt>しつもん</rt></ruby>：</h3>
+                    <p>もうすぐお<ruby>昼<rt>ひる</rt></ruby>の<ruby>時間<rt>じかん</rt></ruby>です。<br><ruby>隣<rt>となり</rt></ruby>の<ruby>日本<rt>にほん</rt></ruby><ruby>人<rt>じん</rt></ruby>の<ruby>同僚<rt>どうりょう</rt></ruby>と<ruby>一緒<rt>いっしょ</rt></ruby>にご<ruby>飯<rt>はん</rt></ruby>を<ruby>食<rt>た</rt></ruby>べたいです。<br>どうやって<ruby>声<rt>こえ</rt></ruby>をかけますか？</p>
+                    <p class="cn-translation">(午餐時間到了，你想邀請旁邊的日本同事一起去吃飯，你會怎麼開口呢？)</p>
+                    
+                    <h3 style="margin-top: 20px; color:#11caa0;">フリー・トーク：</h3>
+                    <p style="font-weight: 700;"><i class="fa-regular fa-comments"></i> 自由に答えてみましょう！</p>
+                    <p class="cn-translation">(請嘗試用你知道的日文回答看看！)</p>
+                </div>
+                <div>
+                    <!-- SVG 插圖：午餐便當 -->
+                    <div class="image-wrapper">
+                        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Table -->
+                            <rect x="100" y="400" width="600" height="200" fill="#f0f4f8"/>
+                            <path d="M 100 400 L 700 400 L 650 350 L 150 350 Z" fill="#cbd5e1"/>
+                            <!-- Bento Box -->
+                            <rect x="250" y="280" width="300" height="150" rx="20" fill="#ef4444" stroke="#1e293b" stroke-width="6"/>
+                            <rect x="260" y="290" width="130" height="130" rx="10" fill="#ffffff"/> <!-- Rice -->
+                            <circle cx="325" cy="355" r="15" fill="#ef4444"/> <!-- Umeboshi -->
+                            <rect x="400" y="290" width="140" height="60" rx="10" fill="#f59e0b"/> <!-- Tamagoyaki/Food -->
+                            <rect x="400" y="360" width="140" height="60" rx="10" fill="#10b981"/> <!-- Veggies -->
+                            <!-- Chopsticks -->
+                            <path d="M 600 250 L 200 450 M 620 270 L 220 470" stroke="#1e293b" stroke-width="8" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Vocab 1 -->
+    <div class="slide-container" id="slide3">
+        <h2 class="slide-title"><ruby>単語<rt>たんご</rt></ruby> 1：ランチと<ruby>食事<rt>しょくじ</rt></ruby> <span class="cn-translation">(午餐與吃飯)</span></h2>
+        <div class="content-area">
+            <div class="bullet-list">
+                <ul>
+                    <li><i class="fa-solid fa-sun"></i> <strong>お<ruby>昼<rt>ひる</rt></ruby> / ランチ</strong> <span class="cn-translation">午餐、中午</span></li>
+                    <li><i class="fa-solid fa-utensils"></i> <strong><ruby>食堂<rt>しょくどう</rt></ruby></strong> <span class="cn-translation">員工餐廳、食堂</span></li>
+                    <li><i class="fa-solid fa-box-open"></i> <strong>お<ruby>弁当<rt>べんとう</rt></ruby></strong> <span class="cn-translation">便當</span></li>
+                    <li><i class="fa-solid fa-hand-sparkles"></i> <strong><ruby>誘<rt>さそ</rt></ruby>う</strong> <span class="cn-translation">邀請、約</span></li>
+                    <li><i class="fa-solid fa-wallet"></i> <strong>おごる</strong> <span class="cn-translation">請客</span></li>
+                </ul>
+            </div>
+            <div style="background-color: #005088; padding: 15px 30px; border-radius: 12px; width: 100%; margin-top: 20px;">
+                <h3 style="color: #11caa0; margin-bottom: 5px;"><ruby>例文<rt>れいぶん</rt></ruby> (例句)</h3>
+                <p style="color: #f3f0df; margin-bottom: 0;"><ruby>同僚<rt>どうりょう</rt></ruby>を<strong>ランチ</strong>に<strong><ruby>誘<rt>さそ</rt></ruby>って</strong>、ラーメンを<strong>おごりました</strong>。</p>
+                <p class="cn-translation" style="color: #cbd5e1 !important; margin-bottom: 0;">(約同事去吃午餐，並且請他吃了拉麵。)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Vocab 1 Practice (QUESTION) -->
+    <div class="slide-container" id="slide4">
+        <h2 class="slide-title"><ruby>練習<rt>れんしゅう</rt></ruby>しましょう！ <span class="cn-translation">(來練習吧！)</span></h2>
+        <div class="content-area">
+            <h3 style="text-align: center; margin-bottom: 20px;">正しい単語を入れましょう！<br><span class="cn-translation" style="font-size: 18px;">(請填入正確的單字並唸出來)</span></h3>
+            <div style="background-color: #f0f4f8; padding: 20px 40px; border-radius: 12px; margin-bottom: 20px; border: 2px dashed #005088;">
+                <h2 style="color: #005088; text-align: center; margin: 0; line-height: 1.6;">
+                    A：昨日、林さんをランチに ＿＿＿＿＿ か。<br>
+                    B：はい。そして、私が ＿＿＿＿＿ よ。
+                </h2>
+                <p class="cn-translation" style="text-align:center; margin-top:10px;">(A: 昨天你有邀請林先生去吃午餐嗎？ / B: 對。而且是我請客喔！)</p>
+            </div>
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-sun"></i></div>
+                    <h3>ランチ</h3>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-box-open"></i></div>
+                    <h3>お<ruby>弁当<rt>べんとう</rt></ruby></h3>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-hand-sparkles"></i></div>
+                    <h3><ruby>誘<rt>さそ</rt></ruby>う</h3>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-wallet"></i></div>
+                    <h3>おごる</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Vocab 1 Practice (ANSWER) -->
+    <div class="slide-container" id="slide4-ans">
+        <h2 class="slide-title"><ruby>練習<rt>れんしゅう</rt></ruby>しましょう！ <span class="answer-badge">解答例</span></h2>
+        <div class="content-area">
+            <h3 style="text-align: center; margin-bottom: 20px;">正しい単語を入れましょう！<br><span class="cn-translation" style="font-size: 18px;">(請填入正確的單字並唸出來)</span></h3>
+            <div style="background-color: #fff0f0; padding: 20px 40px; border-radius: 12px; margin-bottom: 20px; border: 2px dashed #e63946;">
+                <h2 style="color: #005088; text-align: center; margin: 0; line-height: 1.6;">
+                    A：昨日、林さんをランチに <span class="answer-text"><ruby>誘<rt>さそ</rt></ruby>いました</span> か。<br>
+                    B：はい。そして、私が <span class="answer-text">おごりました</span> よ。
+                </h2>
+                <p class="cn-translation" style="text-align:center; margin-top:10px;">(A: 昨天你有邀請林先生去吃午餐嗎？ / B: 對。而且是我請客喔！)</p>
+            </div>
+            <div class="tiled-content">
+                <div class="tile" style="opacity: 0.5;">
+                    <div class="icon"><i class="fa-solid fa-sun"></i></div>
+                    <h3>ランチ</h3>
+                </div>
+                <div class="tile" style="opacity: 0.5;">
+                    <div class="icon"><i class="fa-solid fa-box-open"></i></div>
+                    <h3>お<ruby>弁当<rt>べんとう</rt></ruby></h3>
+                </div>
+                <div class="tile" style="border-color: #e63946; border-width: 4px; opacity: 1;">
+                    <div class="icon" style="color:#e63946;"><i class="fa-solid fa-hand-sparkles"></i></div>
+                    <h3><ruby>誘<rt>さそ</rt></ruby>う</h3>
+                </div>
+                <div class="tile" style="border-color: #e63946; border-width: 4px; opacity: 1;">
+                    <div class="icon" style="color:#e63946;"><i class="fa-solid fa-wallet"></i></div>
+                    <h3>おごる</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Vocab 2 -->
+    <div class="slide-container" id="slide5">
+        <h2 class="slide-title"><ruby>単語<rt>たんご</rt></ruby> 2：<ruby>物<rt>もの</rt></ruby>の貸し借りとお願い <span class="cn-translation">(借東西與請求幫忙)</span></h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <ul>
+                        <li><i class="fa-solid fa-hand-holding"></i> <strong><ruby>貸<rt>か</rt></ruby>す</strong> <span class="cn-translation">借出 (借給別人)</span></li>
+                        <li><i class="fa-solid fa-hand-holding-hand"></i> <strong><ruby>借<rt>か</rt></ruby>りる</strong> <span class="cn-translation">借入 (跟別人借)</span></li>
+                        <li><i class="fa-solid fa-people-carry-box"></i> <strong><ruby>手伝<rt>てつだ</rt></ruby>う</strong> <span class="cn-translation">幫忙</span></li>
+                        <li><i class="fa-solid fa-plug"></i> <strong><ruby>充電器<rt>じゅうでんき</rt></ruby></strong> <span class="cn-translation">充電器</span></li>
+                        <li><i class="fa-solid fa-pen-ruler"></i> <strong><ruby>文房具<rt>ぶんぼうぐ</rt></ruby></strong> <span class="cn-translation">文具 (筆、修正帶等)</span></li>
+                    </ul>
+                    <div style="background-color: #005088; padding: 15px 20px; border-radius: 12px; margin-top: 15px;">
+                        <h3 style="color: #11caa0; font-size: 22px; margin-bottom: 5px;"><ruby>例文<rt>れいぶん</rt></ruby></h3>
+                        <p style="color: #f3f0df; margin-bottom: 0;">スマホの<strong><ruby>充電器<rt>じゅうでんき</rt></ruby></strong>を<strong><ruby>借<rt>か</rt></ruby>りて</strong>もいいですか。</p>
+                        <p class="cn-translation" style="color:#cbd5e1 !important; margin:0;">(請問可以跟你借手機充電器嗎？)</p>
+                    </div>
+                </div>
+                <div>
+                    <!-- SVG 插圖：沒電的手機與充電器 -->
+                    <div class="image-wrapper">
+                        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Phone -->
+                            <rect x="250" y="150" width="180" height="300" rx="20" fill="#334155"/>
+                            <rect x="265" y="170" width="150" height="260" rx="10" fill="#0f172a"/>
+                            <!-- Low battery icon -->
+                            <rect x="300" y="270" width="80" height="40" rx="5" fill="none" stroke="#ef4444" stroke-width="4"/>
+                            <rect x="380" y="285" width="5" height="10" fill="#ef4444"/>
+                            <rect x="305" y="275" width="15" height="30" fill="#ef4444"/>
+                            <!-- Charger cable -->
+                            <path d="M 500 450 Q 400 550 340 450" fill="none" stroke="#f8fafc" stroke-width="8" stroke-linecap="round"/>
+                            <rect x="500" y="430" width="40" height="40" rx="5" fill="#f8fafc"/>
+                            <line x1="540" y1="440" x2="560" y2="440" stroke="#f8fafc" stroke-width="5"/>
+                            <line x1="540" y1="460" x2="560" y2="460" stroke="#f8fafc" stroke-width="5"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Vocab 2 Practice (QUESTION) -->
+    <div class="slide-container" id="slide6">
+        <h2 class="slide-title"><ruby>練習<rt>れんしゅう</rt></ruby>しましょう！ <span class="cn-translation">(來練習吧！)</span></h2>
+        <div class="content-area">
+            <div class="two-column tiled">
+                <div>
+                    <h3 style="text-align: center; margin-bottom: 10px;"><ruby>状況<rt>じょうきょう</rt></ruby> (情境)</h3>
+                    <p style="margin-bottom: 10px;">你在辦公室需要幫忙，請使用剛剛的單字完成請求！</p>
+                    <div style="font-size: 80px; text-align: center; color: #11caa0; margin-top: 20px;">
+                        <i class="fa-solid fa-people-carry-box"></i> + <i class="fa-solid fa-plug"></i>
+                    </div>
+                </div>
+                <div style="background-color: #005088;">
+                    <h3 style="color: #11caa0; text-align: center; border-bottom: 2px solid #f3f0df;"><ruby>話<rt>はな</rt></ruby>してみよう (試著說)</h3>
+                    <ol style="line-height: 1.8; font-size: 22px; padding-left: 20px; margin-top: 15px; margin-bottom: 0;">
+                        <li style="color: #f3f0df;">すみません、少し ＿＿＿＿＿ くれませんか。<br><span class="cn-translation" style="color: #cbd5e1 !important;">(不好意思，能稍微幫我一下嗎？)</span></li>
+                        <li style="color: #f3f0df;">ハサミを ＿＿＿＿＿ もいいですか。<br><span class="cn-translation" style="color: #cbd5e1 !important;">(可以跟你借個剪刀嗎？)</span></li>
+                        <li style="color: #f3f0df;">私の ＿＿＿＿＿ を ＿＿＿＿＿ よ。<br><span class="cn-translation" style="color: #cbd5e1 !important;">(我的充電器借你喔！)</span></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Vocab 2 Practice (ANSWER) -->
+    <div class="slide-container" id="slide6-ans">
+        <h2 class="slide-title"><ruby>練習<rt>れんしゅう</rt></ruby>しましょう！ <span class="answer-badge">解答例</span></h2>
+        <div class="content-area">
+            <div class="two-column tiled">
+                <div>
+                    <h3 style="text-align: center; margin-bottom: 10px;"><ruby>状況<rt>じょうきょう</rt></ruby> (情境)</h3>
+                    <p style="margin-bottom: 10px;">你在辦公室需要幫忙，請使用剛剛的單字完成請求！</p>
+                    <div style="font-size: 80px; text-align: center; color: #11caa0; margin-top: 20px;">
+                        <i class="fa-solid fa-people-carry-box"></i> + <i class="fa-solid fa-plug"></i>
+                    </div>
+                </div>
+                <div style="background-color: #005088;">
+                    <h3 style="color: #11caa0; text-align: center; border-bottom: 2px solid #f3f0df;"><ruby>話<rt>はな</rt></ruby>してみよう (試著說)</h3>
+                    <ol style="line-height: 1.8; font-size: 22px; padding-left: 20px; margin-top: 15px; margin-bottom: 0;">
+                        <li style="color: #f3f0df;">すみません、少し <span class="answer-text"><ruby>手伝<rt>てつだ</rt></ruby>って</span> くれませんか。<br><span class="cn-translation" style="color: #cbd5e1 !important;">(不好意思，能稍微幫我一下嗎？)</span></li>
+                        <li style="color: #f3f0df;">ハサミを <span class="answer-text"><ruby>借<rt>か</rt></ruby>りて</span> もいいですか。<br><span class="cn-translation" style="color: #cbd5e1 !important;">(可以跟你借個剪刀嗎？)</span></li>
+                        <li style="color: #f3f0df;">私の <span class="answer-text"><ruby>充電器<rt>じゅうでんき</rt></ruby></span> を <span class="answer-text"><ruby>貸<rt>か</rt></ruby>します</span> よ。<br><span class="cn-translation" style="color: #cbd5e1 !important;">(我的充電器借你喔！)</span></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Grammar 1 -->
+    <div class="slide-container" id="slide7">
+        <div class="section-title-layout">
+            <hr>
+            <h2><ruby>文法<rt>ぶんぽう</rt></ruby> 1</h2>
+            <h1 style="font-size: 70px; margin: 20px 0;">〜てもいいですか</h1>
+            <p class="subtitle cn-translation" style="font-size: 28px;">( 請問可以...嗎？ / 徵求許可 )</p>
+            <div style="background-color: #f0f4f8; border: 2px solid #005088; padding: 25px 40px; border-radius: 12px; margin-top: 30px; text-align: left;">
+                <p style="font-size: 24px; font-weight: 700; margin-bottom: 5px; color: #005088;">相手に許可（きょか）を求める時に使います。</p>
+                <p style="margin-bottom: 0;">動詞て形 ＋ <strong>もいいですか</strong><br>
+                <span class="cn-translation">(向對方尋求許可時使用。是日常辦公室與生活中非常實用的禮貌句型。)</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Grammar 1 Practice (QUESTION) -->
+    <div class="slide-container" id="slide8">
+        <h2 class="slide-title">許可をもらいましょう！ <span class="cn-translation">(來徵求許可吧！)</span></h2>
+        <div class="content-area">
+            <h3 style="color: #11caa0; margin-bottom: 25px;">「〜てもいいですか」に変えてください。</h3>
+            
+            <div style="width: 80%; border-left: 8px solid #11caa0; padding-left: 30px; background-color: #f0f4f8; padding-top: 15px; padding-bottom: 15px; border-radius: 0 12px 12px 0;">
+                <p style="font-size: 26px; line-height: 1.8; margin: 0;">
+                    1. ここに<ruby>座<rt>すわ</rt></ruby>ります。<span class="cn-translation" style="font-size: 18px !important;">(坐這裡)</span><br>
+                    ➔ ここに ＿＿＿＿＿＿＿＿＿＿ 。<span class="cn-translation" style="font-size: 18px !important;">(請問可以坐這裡嗎？)</span><br><br>
+                    
+                    2. <ruby>窓<rt>まど</rt></ruby>を<ruby>開<rt>あ</rt></ruby>けます。<span class="cn-translation" style="font-size: 18px !important;">(開窗戶)</span><br>
+                    ➔ <ruby>窓<rt>まど</rt></ruby>を ＿＿＿＿＿＿＿＿＿＿ 。<span class="cn-translation" style="font-size: 18px !important;">(請問可以開窗戶嗎？)</span><br>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11: Grammar 1 Practice (ANSWER) -->
+    <div class="slide-container" id="slide8-ans">
+        <h2 class="slide-title">許可をもらいましょう！ <span class="answer-badge">解答</span></h2>
+        <div class="content-area">
+            <h3 style="color: #11caa0; margin-bottom: 25px;">「〜てもいいですか」に変えてください。</h3>
+            
+            <div style="width: 80%; border-left: 8px solid #11caa0; padding-left: 30px; background-color: #f0f4f8; padding-top: 15px; padding-bottom: 15px; border-radius: 0 12px 12px 0;">
+                <p style="font-size: 26px; line-height: 1.8; margin: 0;">
+                    1. ここに<ruby>座<rt>すわ</rt></ruby>ります。<span class="cn-translation" style="font-size: 18px !important;">(坐這裡)</span><br>
+                    ➔ ここに <span class="answer-text"><ruby>座<rt>すわ</rt></ruby>ってもいいですか</span> 。<br><br>
+                    
+                    2. <ruby>窓<rt>まど</rt></ruby>を<ruby>開<rt>あ</rt></ruby>けます。<span class="cn-translation" style="font-size: 18px !important;">(開窗戶)</span><br>
+                    ➔ <ruby>窓<rt>まど</rt></ruby>を <span class="answer-text"><ruby>開<rt>あ</rt></ruby>けてもいいですか</span> 。<br>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Grammar 2 (N4 UPGRADE: 〜ようと思っています) -->
+    <div class="slide-container bleed-image-layout" id="slide9">
+        <div class="content-container">
+            <h2 class="slide-title"><ruby>文法<rt>ぶんぽう</rt></ruby> 2</h2>
+            <h1 style="font-size: 42px; margin-bottom: 5px; line-height: 1.4;">〜ようと<ruby>思<rt>おも</rt></ruby>っています</h1>
+            <p class="cn-translation" style="font-size: 22px !important; margin-bottom: 20px;">( 我正打算... / 我想... )</p>
+            
+            <div style="border-left: 5px solid #11caa0; padding-left: 20px; margin-bottom: 20px; background-color: #f0f4f8; padding-top: 15px; padding-bottom: 15px;">
+                <p style="margin-top: 0;"><strong>自分の計画（けいかく）や意志（いし）を伝える時。</strong></p>
+                <p style="margin-bottom: 0;">（N4文法）同僚に自分の予定を話す時によく使います。<br><span class="cn-translation">(用來表達自己的計畫或打算。在職場中告訴同事自己準備要做什麼時非常實用。)</span></p>
+            </div>
+
+            <div style="background-color: #005088; padding: 15px; border-radius: 8px;">
+                <p style="margin:0; font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 24px; text-align:center; color: #f3f0df;">
+                    動詞 意向形（よう/おう） ＋ と思っています
+                </p>
+            </div>
+            <p style="margin-top: 15px;"><strong><ruby>例<rt>れい</rt></ruby>：</strong>今日のお<ruby>昼<rt>ひる</rt></ruby>は、ラーメンを<ruby>食<rt>た</rt></ruby>べ<span class="highlight-text">ようと<ruby>思<rt>おも</rt></ruby>っています</span>。</p>
+        </div>
+        <div class="image-container">
+            <!-- SVG 插圖：思考午餐 -->
+            <svg class="bleed-image-side" viewBox="0 0 800 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="background-color: #f0f4f8;">
+                <!-- Person -->
+                <circle cx="250" cy="650" r="150" fill="#cbd5e1"/>
+                <!-- Thought bubble -->
+                <path d="M 350 450 Q 450 500 550 400 Q 700 250 500 150 Q 300 50 350 250 Q 250 350 350 450 Z" fill="#ffffff" stroke="#005088" stroke-width="6"/>
+                <circle cx="370" cy="520" r="20" fill="#ffffff" stroke="#005088" stroke-width="4"/>
+                <circle cx="320" cy="580" r="10" fill="#ffffff" stroke="#005088" stroke-width="3"/>
+                <!-- Ramen bowl inside thought -->
+                <path d="M 400 300 Q 475 350 550 300" fill="#ef4444" stroke="#1e293b" stroke-width="5"/> 
+                <ellipse cx="475" cy="300" rx="75" ry="20" fill="#f8fafc" stroke="#1e293b" stroke-width="5"/> 
+                <path d="M 430 300 Q 450 260 470 300 T 510 300" fill="none" stroke="#f59e0b" stroke-width="6"/> 
+                <path d="M 520 240 L 460 310 M 535 250 L 475 320" stroke="#005088" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Slide 13: Grammar 2 Practice (QUESTION) -->
+    <div class="slide-container" id="slide10">
+        <h2 class="slide-title">計画を伝えよう！ <span class="cn-translation">(來表達計畫吧！)</span></h2>
+        <div class="content-area">
+            <p style="text-align: center; font-size: 24px; margin-bottom: 25px;">請將以下動作改為「我正打算要... / 我想...」的句型。</p>
+            <div class="bullet-list" style="max-width: 1000px; background-color: #f0f4f8; padding: 25px 40px; border-radius: 12px; border: 1px solid #cbd5e1;">
+                <ul>
+                    <li>
+                        <i class="fa-solid fa-mug-hot"></i> 
+                        <strong>週末はゆっくり休みます。</strong> <span class="cn-translation">(週末好好休息)</span>
+                        <div style="margin-top: 10px;"><span style="color:#11caa0; font-weight:bold;">➔ 週末はゆっくり</span> <u style="text-underline-offset: 8px; color:#005088;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> </div>
+                    </li>
+                    <hr style="border: 1px dashed #cbd5e1; margin: 15px 0;">
+                    <li>
+                        <i class="fa-solid fa-file-word"></i> 
+                        <strong>会議の資料を作ります。</strong> <span class="cn-translation">(製作會議資料)</span>
+                        <div style="margin-top: 10px;"><span style="color:#11caa0; font-weight:bold;">➔ 会議の資料を</span> <u style="text-underline-offset: 8px; color:#005088;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 14: Grammar 2 Practice (ANSWER) -->
+    <div class="slide-container" id="slide10-ans">
+        <h2 class="slide-title">計画を伝えよう！ <span class="answer-badge">解答</span></h2>
+        <div class="content-area">
+            <p style="text-align: center; font-size: 24px; margin-bottom: 25px;">請將以下動作改為「我正打算要... / 我想...」的句型。</p>
+            <div class="bullet-list" style="max-width: 1000px; background-color: #f0f4f8; padding: 25px 40px; border-radius: 12px; border: 1px solid #cbd5e1;">
+                <ul>
+                    <li>
+                        <i class="fa-solid fa-mug-hot"></i> 
+                        <strong>週末はゆっくり休みます。</strong> <span class="cn-translation">(週末好好休息)</span>
+                        <div style="margin-top: 10px;"><span style="color:#11caa0; font-weight:bold;">➔ 週末はゆっくり</span> <span class="answer-text"><ruby>休<rt>やす</rt></ruby>もうと<ruby>思<rt>おも</rt></ruby>っています</span>。</div>
+                    </li>
+                    <hr style="border: 1px dashed #cbd5e1; margin: 15px 0;">
+                    <li>
+                        <i class="fa-solid fa-file-word"></i> 
+                        <strong>会議の資料を作ります。</strong> <span class="cn-translation">(製作會議資料)</span>
+                        <div style="margin-top: 10px;"><span style="color:#11caa0; font-weight:bold;">➔ 会議の資料を</span> <span class="answer-text"><ruby>作<rt>つく</rt></ruby>ろうと<ruby>思<rt>おも</rt></ruby>っています</span>。</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 15: Dialog 1 (Advanced N4 Ver) -->
+    <div class="slide-container" id="slide13">
+        <h2 class="slide-title"><ruby>会話<rt>かいわ</rt></ruby> 1：ランチに<ruby>誘<rt>さそ</rt></ruby>う <span class="cn-translation">(邀請吃午餐)</span></h2>
+        <div class="content-area">
+            <div class="two-column rounded-image-layout" style="align-items: center; grid-template-columns: 1fr 2.5fr; gap: 40px;">
+                <div>
+                    <!-- SVG 插圖：拉麵 -->
+                    <div class="image-wrapper" style="height: 220px; width: 220px; border-color:#11caa0; border-width:4px;">
+                        <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 30 110 Q 110 180 190 110" fill="#ef4444" stroke="#1e293b" stroke-width="5"/> <!-- Bowl bottom -->
+                            <ellipse cx="110" cy="110" rx="80" ry="25" fill="#f8fafc" stroke="#1e293b" stroke-width="5"/> <!-- Bowl top -->
+                            <path d="M 60 110 Q 80 70 100 110 T 140 110" fill="none" stroke="#f59e0b" stroke-width="6"/> <!-- Noodles -->
+                            <circle cx="130" cy="115" r="15" fill="#ffffff" stroke="#1e293b" stroke-width="3"/> <!-- Egg -->
+                            <circle cx="135" cy="115" r="8" fill="#f59e0b"/> <!-- Egg yolk -->
+                            <!-- Chopsticks -->
+                            <path d="M 160 50 L 100 120 M 175 60 L 115 130" stroke="#005088" stroke-width="6" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div style="font-size: 26px; line-height: 1.8;">
+                    <div class="dialog-line" style="margin-bottom: 15px;">
+                        <span class="dialog-speaker">林：</span>
+                        <ruby>田中<rt>たなか</rt></ruby>さん、お<ruby>昼<rt>ひる</rt></ruby>、あのラーメン<ruby>屋<rt>や</rt></ruby>に<span class="highlight-text"><ruby>行<rt>い</rt></ruby>こうと<ruby>思<rt>おも</rt></ruby>っているんですが</span>、<ruby>一緒<rt>いっしょ</rt></ruby>にどうですか。
+                        <div class="cn-translation" style="font-size: 18px !important;">(田中先生，午餐我正打算去那家拉麵店，你要不要一起去？)</div>
+                    </div>
+                    <div class="dialog-line" style="margin-bottom: 15px;">
+                        <span class="dialog-speaker"><ruby>田中<rt>たなか</rt></ruby>：</span>
+                        いいですね。でも、あそこのラーメンは<span class="highlight-text"><ruby>辛<rt>から</rt></ruby>すぎる</span>と<ruby>聞<rt>き</rt></ruby>きましたよ。
+                        <div class="cn-translation" style="font-size: 18px !important;">(好啊。但是我聽說那裡的拉麵太辣了喔。)</div>
+                    </div>
+                    <div class="dialog-line" style="margin-bottom: 0;">
+                        <span class="dialog-speaker">林：</span>
+                        <ruby>大丈夫<rt>だいじょうぶ</rt></ruby>です！<ruby>辛<rt>から</rt></ruby>くないラーメンも<span class="highlight-text">あるそうです</span>から。
+                        <div class="cn-translation" style="font-size: 18px !important;">(沒問題！聽說也有不辣的拉麵喔。)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 16: Dialog 1 Roleplay (QUESTION - Font Maximize) -->
+    <div class="slide-container" id="slide14">
+        <h2 class="slide-title">ロールプレイ <span class="cn-translation">(角色扮演)</span></h2>
+        <div class="content-area">
+            <p style="font-size: 26px; color:#11caa0; text-align: center; margin-bottom: 25px;"><i class="fa-solid fa-masks-theater"></i> 現在把關鍵字遮住，請試著看著填空說出来！</p>
+            
+            <div style="background-color: #f0f4f8; border: 2px dashed #005088; padding: 35px 50px; border-radius: 12px; width: 100%; font-size: 32px; line-height: 1.8;">
+                <div class="dialog-line" style="margin-bottom: 25px;">
+                    <span class="dialog-speaker" style="color:#005088;">林：</span>
+                    <ruby>田中<rt>たなか</rt></ruby>さん、お<ruby>昼<rt>ひる</rt></ruby>、あのラーメン<ruby>屋<rt>や</rt></ruby>に <strong>[ ＿＿＿＿＿＿＿＿＿＿ ]</strong> 、<ruby>一緒<rt>いっしょ</rt></ruby>にどうですか。
+                </div>
+                <div class="dialog-line" style="margin-bottom: 25px;">
+                    <span class="dialog-speaker" style="color:#005088;"><ruby>田中<rt>たなか</rt></ruby>：</span>
+                    いいですね。でも、あそこのラーメンは <strong>[ ＿＿＿＿＿＿ ]</strong> と<ruby>聞<rt>き</rt></ruby>きましたよ。
+                </div>
+                <div class="dialog-line" style="margin-bottom: 0;">
+                    <span class="dialog-speaker" style="color:#005088;">林：</span>
+                    <ruby>大丈夫<rt>だいじょうぶ</rt></ruby>です！<ruby>辛<rt>から</rt></ruby>くないラーメンも <strong>[ ＿＿＿＿＿＿＿＿ ]</strong> から。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 17: Dialog 1 Roleplay (ANSWER - Font Maximize) -->
+    <div class="slide-container" id="slide14-ans">
+        <h2 class="slide-title">ロールプレイ <span class="answer-badge">解答</span></h2>
+        <div class="content-area">
+            <div style="background-color: #fff0f0; border: 2px dashed #e63946; padding: 35px 50px; border-radius: 12px; width: 100%; font-size: 32px; line-height: 1.8;">
+                <div class="dialog-line" style="margin-bottom: 25px;">
+                    <span class="dialog-speaker" style="color:#005088;">林：</span>
+                    <ruby>田中<rt>たなか</rt></ruby>さん、お<ruby>昼<rt>ひる</rt></ruby>、あのラーメン<ruby>屋<rt>や</rt></ruby>に <span class="answer-text"><ruby>行<rt>い</rt></ruby>こうと<ruby>思<rt>おも</rt></ruby>っているんですが</span> 、<ruby>一緒<rt>いっしょ</rt></ruby>にどうですか。
+                </div>
+                <div class="dialog-line" style="margin-bottom: 25px;">
+                    <span class="dialog-speaker" style="color:#005088;"><ruby>田中<rt>たなか</rt></ruby>：</span>
+                    いいですね。でも、あそこのラーメンは <span class="answer-text"><ruby>辛<rt>から</rt></ruby>すぎる</span> と<ruby>聞<rt>き</rt></ruby>きましたよ。
+                </div>
+                <div class="dialog-line" style="margin-bottom: 0;">
+                    <span class="dialog-speaker" style="color:#005088;">林：</span>
+                    <ruby>大丈夫<rt>だいじょうぶ</rt></ruby>です！<ruby>辛<rt>から</rt></ruby>くないラーメンも <span class="answer-text">あるそうです</span> から。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 18: Dialog 2 (Image scaled down, Text Maximize) -->
+    <div class="slide-container" id="slide15">
+        <h2 class="slide-title"><ruby>会話<rt>かいわ</rt></ruby> 2：<ruby>物<rt>もの</rt></ruby>を<ruby>借<rt>か</rt></ruby>りる <span class="cn-translation">(跟同事借東西)</span></h2>
+        <div class="content-area">
+            <div class="two-column rounded-image-layout" style="align-items: center; grid-template-columns: 2.5fr 1fr; gap: 40px;">
+                <div style="font-size: 28px; line-height: 1.6;">
+                    <div class="dialog-line" style="margin-bottom: 18px;">
+                        <span class="dialog-speaker">林：</span>
+                        すみません、スマホの<ruby>充電器<rt>じゅうでんき</rt></ruby>、<ruby>持<rt>も</rt></ruby>っていますか。
+                        <div class="cn-translation" style="font-size: 20px !important;">(不好意思，你有帶手機充電器嗎？)</div>
+                    </div>
+                    <div class="dialog-line" style="margin-bottom: 18px;">
+                        <span class="dialog-speaker"><ruby>佐藤<rt>さとう</rt></ruby>：</span>
+                        はい、<ruby>持<rt>も</rt></ruby>っていますよ。
+                        <div class="cn-translation" style="font-size: 20px !important;">(有喔，我有帶。)</div>
+                    </div>
+                    <div class="dialog-line" style="margin-bottom: 18px;">
+                        <span class="dialog-speaker">林：</span>
+                        ちょっと<ruby>借<rt>か</rt></ruby>り<span class="highlight-text">てもいいですか</span>。<ruby>充電<rt>じゅうでん</rt></ruby>が<ruby>切<rt>き</rt></ruby>れそう<span class="highlight-text">なんです</span>。
+                        <div class="cn-translation" style="font-size: 20px !important;">(可以借我一下嗎？快沒電了。)</div>
+                    </div>
+                    <div class="dialog-line" style="margin-bottom: 0;">
+                        <span class="dialog-speaker"><ruby>佐藤<rt>さとう</rt></ruby>：</span>
+                        ええ、どうぞ。
+                        <div class="cn-translation" style="font-size: 20px !important;">(嗯，請用。)</div>
+                    </div>
+                </div>
+                <div>
+                    <!-- SVG 插圖：借東西 -->
+                    <div class="image-wrapper" style="height: 220px; width: 220px; border-color:#11caa0; border-width:4px;">
+                        <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Hand offering phone -->
+                            <path d="M 20 160 Q 60 130 100 150 L 140 130 L 160 150 L 110 180 Z" fill="#f59e0b"/>
+                            <rect x="90" y="80" width="50" height="80" rx="5" fill="#334155" transform="rotate(20 110 120)"/>
+                            <rect x="95" y="85" width="40" height="70" rx="2" fill="#11caa0" transform="rotate(20 110 120)"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 19: Dialog 2 Roleplay (QUESTION - Font Maximize) -->
+    <div class="slide-container" id="slide16">
+        <h2 class="slide-title">ロールプレイ <span class="cn-translation">(角色扮演)</span></h2>
+        <div class="content-area">
+            <p style="font-size: 26px; color:#11caa0; text-align: center; margin-bottom: 25px;"><i class="fa-solid fa-plug"></i> 換你來跟同事借充電器了！</p>
+            
+            <div style="background-color: #f0f4f8; border: 2px dashed #005088; padding: 35px 50px; border-radius: 12px; width: 100%; font-size: 36px; line-height: 1.8;">
+                <div class="dialog-line" style="margin-bottom: 25px;">
+                    <span class="dialog-speaker" style="color:#005088;">林：</span>
+                    すみません、スマホの <strong>[ ＿＿＿＿ ]</strong> 、<ruby>持<rt>も</rt></ruby>っていますか。
+                </div>
+                <div class="dialog-line" style="margin-bottom: 25px;">
+                    <span class="dialog-speaker" style="color:#005088;"><ruby>佐藤<rt>さとう</rt></ruby> (先生)：</span>
+                    はい、<ruby>持<rt>も</rt></ruby>っていますよ。
+                </div>
+                <div class="dialog-line" style="margin-bottom: 0;">
+                    <span class="dialog-speaker" style="color:#005088;">林：</span>
+                    ちょっと <strong>[ ＿＿＿＿＿＿＿＿＿＿ ]</strong> 。<ruby>充電<rt>じゅうでん</rt></ruby>が<ruby>切<rt>き</rt></ruby>れそう <strong>[ ＿＿＿＿ ]</strong> 。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 20: Dialog 2 Roleplay (ANSWER - Font Maximize) -->
+    <div class="slide-container" id="slide16-ans">
+        <h2 class="slide-title">ロールプレイ <span class="answer-badge">解答例</span></h2>
+        <div class="content-area">
+            <div style="background-color: #fff0f0; border: 2px dashed #e63946; padding: 35px 50px; border-radius: 12px; width: 100%; font-size: 36px; line-height: 1.8;">
+                <div class="dialog-line" style="margin-bottom: 25px;">
+                    <span class="dialog-speaker" style="color:#005088;">林：</span>
+                    すみません、スマホの <span class="answer-text"><ruby>充電器<rt>じゅうでんき</rt></ruby></span> 、<ruby>持<rt>も</rt></ruby>っていますか。
+                </div>
+                <div class="dialog-line" style="margin-bottom: 25px;">
+                    <span class="dialog-speaker" style="color:#005088;"><ruby>佐藤<rt>さとう</rt></ruby> (先生)：</span>
+                    はい、<ruby>持<rt>も</rt></ruby>っていますよ。
+                </div>
+                <div class="dialog-line" style="margin-bottom: 0;">
+                    <span class="dialog-speaker" style="color:#005088;">林：</span>
+                    ちょっと <span class="answer-text"><ruby>借<rt>か</rt></ruby>りてもいいですか</span> 。<ruby>充電<rt>じゅうでん</rt></ruby>が<ruby>切<rt>き</rt></ruby>れそう <span class="answer-text">なんです</span> 。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 21: Task 1 (QUESTION) -->
+    <div class="slide-container" id="slide17">
+        <h2 class="slide-title"><ruby>総合<rt>そうごう</rt></ruby>タスク 1：ランチミッション <span class="cn-translation">(綜合任務 1：約吃午餐)</span></h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <h3 style="color: #005088; border-bottom: 2px solid #11caa0; display: inline-block; margin-bottom: 10px;">シチュエーション <span class="cn-translation" style="font-size:18px;">(狀況)</span></h3>
+                    <p>到了午餐時間。你今天打算去吃壽司（お寿司），請自然地邀請旁邊的同事一起去！</p>
+                    
+                    <h3 style="color: #11caa0; margin-top: 20px; margin-bottom: 10px;">ミッション <span class="cn-translation" style="font-size:18px;">(任務)</span></h3>
+                    <ol style="padding-left: 20px; font-weight: 700; font-size: 22px; margin-bottom: 0;">
+                        <li>告訴同事你打算去吃壽司。<br><span style="font-size:16px; font-weight:400; color:#64748b;">(使用：お寿司、〜ようと思っています)</span></li>
+                        <li>邀請同事一起去。<br><span style="font-size:16px; font-weight:400; color:#64748b;">(使用：一緒にどうですか)</span></li>
+                    </ol>
+                </div>
+                <div>
+                    <!-- SVG 插圖：壽司 -->
+                    <div class="image-wrapper">
+                        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="200" y="250" width="400" height="100" fill="#1e293b" rx="10"/> <!-- plate -->
+                            <!-- Sushi 1 -->
+                            <rect x="250" y="200" width="80" height="40" fill="#ffffff" rx="10"/>
+                            <path d="M 240 190 Q 290 170 340 190 L 340 210 Q 290 190 240 210 Z" fill="#ef4444"/> <!-- tuna -->
+                            <!-- Sushi 2 -->
+                            <rect x="360" y="200" width="80" height="40" fill="#ffffff" rx="10"/>
+                            <path d="M 350 190 Q 400 170 450 190 L 450 210 Q 400 190 350 210 Z" fill="#f59e0b"/> <!-- salmon -->
+                            <!-- Sushi 3 -->
+                            <rect x="470" y="200" width="80" height="40" fill="#ffffff" rx="10"/>
+                            <rect x="460" y="180" width="100" height="30" fill="#10b981" rx="5"/> <!-- egg/nori -->
+                            <rect x="500" y="170" width="20" height="50" fill="#1e293b"/> <!-- nori band -->
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 22: Task 1 (ANSWER) -->
+    <div class="slide-container" id="slide17-ans">
+        <h2 class="slide-title"><ruby>総合<rt>そうごう</rt></ruby>タスク 1：ランチミッション <span class="answer-badge">解答例</span></h2>
+        <div class="content-area">
+            <h3 style="color: #005088; text-align: center; margin-bottom: 20px;">このように言ってみましょう！ <span class="cn-translation" style="font-size:18px;">(試著這樣說說看！)</span></h3>
+            <div style="background-color: #fff0f0; border: 2px solid #e63946; border-radius: 12px; padding: 30px; width: 80%;">
+                <p style="font-size: 26px; line-height: 1.8; margin: 0;">
+                    「もうお<ruby>昼<rt>ひる</rt></ruby>ですね。<br><br>
+                    <ruby>私<rt>わたし</rt></ruby>は、お<ruby>寿司<rt>すし</rt></ruby>を<ruby>食<rt>た</rt></ruby>べに<span class="answer-text"><ruby>行<rt>い</rt></ruby>こうと<ruby>思<rt>おも</rt></ruby>っているんですが</span>、<br>
+                    <span class="answer-text"><ruby>一緒<rt>いっしょ</rt></ruby>にどうですか</span>。」
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 23: Task 2 (QUESTION) -->
+    <div class="slide-container" id="slide18">
+        <h2 class="slide-title"><ruby>総合<rt>そうごう</rt></ruby>タスク 2：お<ruby>願<rt>ねが</rt></ruby>いミッション <span class="cn-translation">(綜合任務 2：請求幫忙)</span></h2>
+        <div class="content-area">
+            <div class="two-column rounded-image-layout" style="align-items: center;">
+                <div>
+                    <!-- SVG 插圖：借傘 -->
+                    <div class="image-wrapper" style="border-color: #005088;">
+                        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Rain drops -->
+                            <line x1="200" y1="100" x2="150" y2="200" stroke="#005088" stroke-width="4"/>
+                            <line x1="300" y1="150" x2="250" y2="250" stroke="#005088" stroke-width="4"/>
+                            <line x1="400" y1="50" x2="350" y2="150" stroke="#005088" stroke-width="4"/>
+                            <line x1="500" y1="200" x2="450" y2="300" stroke="#005088" stroke-width="4"/>
+                            <line x1="600" y1="100" x2="550" y2="200" stroke="#005088" stroke-width="4"/>
+                            <!-- Umbrella -->
+                            <path d="M 300 400 Q 400 200 500 400 Z" fill="#ef4444"/>
+                            <line x1="400" y1="400" x2="400" y2="500" stroke="#1e293b" stroke-width="8"/>
+                            <path d="M 400 500 A 20 20 0 0 0 440 500" fill="none" stroke="#1e293b" stroke-width="8"/>
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: #11caa0; margin-bottom: 5px;">シチュエーション <span class="cn-translation" style="font-size:18px;">(狀況)</span></h3>
+                    <p>下班時突然下雨了，但你沒帶傘。你看到同事有兩把傘（傘を２本持っている），你想跟他借一把。</p>
+                    
+                    <h3 style="color: #005088; margin-top: 20px; margin-bottom: 10px;">ミッション <span class="cn-translation" style="font-size:18px;">(任務)</span></h3>
+                    <ol style="padding-left: 20px; font-weight: 700; font-size: 20px; color: #11caa0; margin-bottom: 0;">
+                        <li>說明自己沒帶傘的狀況。<br><span style="font-size:16px; font-weight:400; color:#64748b;">(使用：傘がない、〜んです)</span></li>
+                        <li>開口詢問能不能借一把傘。<br><span style="font-size:16px; font-weight:400; color:#64748b;">(使用：１本、借りる、〜てもいいですか)</span></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 24: Task 2 (ANSWER) -->
+    <div class="slide-container" id="slide18-ans">
+        <h2 class="slide-title"><ruby>総合<rt>そうごう</rt></ruby>タスク 2：お<ruby>願<rt>ねが</rt></ruby>いミッション <span class="answer-badge">解答例</span></h2>
+        <div class="content-area">
+            <h3 style="color: #005088; text-align: center; margin-bottom: 20px;">このように言ってみましょう！ <span class="cn-translation" style="font-size:18px;">(試著這樣說說看！)</span></h3>
+            <div style="background-color: #fff0f0; border: 2px solid #e63946; border-radius: 12px; padding: 30px; width: 80%;">
+                <p style="font-size: 24px; line-height: 1.8; margin: 0;">
+                    「あっ、<ruby>雨<rt>あめ</rt></ruby>ですね。<ruby>私<rt>わたし</rt></ruby>、<ruby>傘<rt>かさ</rt></ruby>がない<span class="answer-text">んです</span>。<br><br>
+                    すみません、<ruby>傘<rt>かさ</rt></ruby>を1<ruby>本<rt>ほん</rt></ruby>、<span class="answer-text"><ruby>借<rt>か</rt></ruby>りてもいいですか</span>。」
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 25: Summary -->
+    <div class="slide-container" id="slide19">
+        <h2 class="slide-title">まとめ <span class="cn-translation">(今日總結)</span></h2>
+        <div class="content-area">
+            <p style="font-size: 26px; text-align: center; margin-bottom: 25px; font-weight: 700; color: #005088;">今日学んだ大切なポイント <span class="cn-translation" style="font-size:20px;">(今天學到的重要重點)</span></p>
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon" style="color:#f3f0df;"><i class="fa-solid fa-circle-check"></i></div>
+                    <h3 style="color:#11caa0;">許可をもらう</h3>
+                    <p>「〜<strong style="color:#11caa0;">てもいいですか</strong>」</p>
+                    <p class="cn-translation" style="font-size:14px !important;">(徵求對方的許可，例如：可以借嗎？可以坐嗎？)</p>
+                </div>
+                <div class="tile">
+                    <div class="icon" style="color:#f3f0df;"><i class="fa-solid fa-lightbulb"></i></div>
+                    <h3 style="color:#11caa0;">自分の計画</h3>
+                    <p>「〜<strong style="color:#11caa0;">ようと思っています</strong>」</p>
+                    <p class="cn-translation" style="font-size:14px !important;">(表達自己的打算，常用於自然地邀請同事)</p>
+                </div>
+                <div class="tile">
+                    <div class="icon" style="color:#f3f0df;"><i class="fa-solid fa-comment-dots"></i></div>
+                    <h3 style="color:#11caa0;">状況を説明</h3>
+                    <p>「〜<strong style="color:#11caa0;">んです</strong>」</p>
+                    <p class="cn-translation" style="font-size:14px !important;">(在請求別人之前，自然地說明自己的狀況)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 26: Homework -->
+    <div class="slide-container" id="slide20">
+        <div class="qa-layout">
+            <h2><i class="fa-solid fa-house-laptop"></i> 宿題＆アクション</h2>
+            <p class="cn-translation" style="margin-bottom: 20px; color:#64748b;">( 作業與行動：下次上課前的任務 )</p>
+            
+            <div style="background-color: #f0f4f8; padding: 25px 40px; border-radius: 12px; max-width: 900px; margin: 0 auto; text-align: left; border: 2px solid #005088;">
+                <p style="font-weight: 700; color: #11caa0; font-size: 28px; text-align: center; margin-bottom: 5px;">先生をランチに誘おう！</p>
+                <p style="text-align: center; margin-bottom: 20px; color: #005088;">(請想一家你最推薦的台灣餐廳，並邀請老師一起去！)</p>
+                
+                <ul style="font-size: 22px; line-height: 1.8; list-style-type: none; padding-left: 30px; margin-bottom: 0;">
+                    <li><i class="fa-solid fa-check" style="color:#11caa0; margin-right: 15px;"></i> 用日文想好邀請的台詞（使用：〜ようと思っています）。</li>
+                    <li><i class="fa-solid fa-check" style="color:#11caa0; margin-right: 15px;"></i> 說明這家店哪裡好吃或推薦。</li>
+                    <li><i class="fa-solid fa-microphone-lines" style="color:#11caa0; margin-right: 15px;"></i> 錄製一段語音傳給老師。</li>
+                    <li style="margin-bottom: 0;"><i class="fa-solid fa-people-arrows" style="color:#11caa0; margin-right: 15px;"></i> 下次上課我們來模擬這段邀約對話！</li>
+                </ul>
+            </div>
+            
+            <div class="contact-info" style="font-size: 28px; font-weight: 700; margin-top: 25px;">
+                お疲れ様でした！ <span class="cn-translation" style="font-size:22px !important;">(辛苦了！)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 27: Vocabulary Summary -->
+    <div class="slide-container" id="slide21">
+        <h2 class="slide-title">単語まとめ <span class="cn-translation">(單字總複習)</span></h2>
+        <div class="content-area">
+            <div class="two-column" style="align-items: stretch; gap: 40px;">
+                <div style="background-color: #f0f4f8; border: 2px solid #005088; border-radius: 12px; padding: 40px; width: 100%;">
+                    <h3 style="color: #11caa0; text-align: center; border-bottom: 2px dashed #cbd5e1; padding-bottom: 15px; margin-top: 0;"><i class="fa-solid fa-utensils"></i> ランチ・食事</h3>
+                    <ul style="font-size: 28px; line-height: 2.2; margin-top: 20px; list-style: none; padding-left: 0;">
+                        <li style="padding-left: 40px; position: relative;"><i class="fa-solid fa-check" style="color: #11caa0; position: absolute; left: 0; top: 8px;"></i>お<ruby>昼<rt>ひる</rt></ruby> / ランチ</li>
+                        <li style="padding-left: 40px; position: relative;"><i class="fa-solid fa-check" style="color: #11caa0; position: absolute; left: 0; top: 8px;"></i><ruby>食堂<rt>しょくどう</rt></ruby></li>
+                        <li style="padding-left: 40px; position: relative;"><i class="fa-solid fa-check" style="color: #11caa0; position: absolute; left: 0; top: 8px;"></i>お<ruby>弁当<rt>べんとう</rt></ruby></li>
+                        <li style="padding-left: 40px; position: relative;"><i class="fa-solid fa-check" style="color: #11caa0; position: absolute; left: 0; top: 8px;"></i><ruby>誘<rt>さそ</rt></ruby>う</li>
+                        <li style="padding-left: 40px; position: relative;"><i class="fa-solid fa-check" style="color: #11caa0; position: absolute; left: 0; top: 8px;"></i>おごる</li>
+                    </ul>
+                </div>
+                <div style="background-color: #f0f4f8; border: 2px solid #005088; border-radius: 12px; padding: 40px; width: 100%;">
+                    <h3 style="color: #11caa0; text-align: center; border-bottom: 2px dashed #cbd5e1; padding-bottom: 15px; margin-top: 0;"><i class="fa-solid fa-hand-holding"></i> 貸し借り・お願い</h3>
+                    <ul style="font-size: 28px; line-height: 2.2; margin-top: 20px; list-style: none; padding-left: 0;">
+                        <li style="padding-left: 40px; position: relative;"><i class="fa-solid fa-check" style="color: #11caa0; position: absolute; left: 0; top: 8px;"></i><ruby>貸<rt>か</rt></ruby>す</li>
+                        <li style="padding-left: 40px; position: relative;"><i class="fa-solid fa-check" style="color: #11caa0; position: absolute; left: 0; top: 8px;"></i><ruby>借<rt>か</rt></ruby>りる</li>
+                        <li style="padding-left: 40px; position: relative;"><i class="fa-solid fa-check" style="color: #11caa0; position: absolute; left: 0; top: 8px;"></i><ruby>手伝<rt>てつだ</rt></ruby>う</li>
+                        <li style="padding-left: 40px; position: relative;"><i class="fa-solid fa-check" style="color: #11caa0; position: absolute; left: 0; top: 8px;"></i><ruby>充電器<rt>じゅうでんき</rt></ruby></li>
+                        <li style="padding-left: 40px; position: relative;"><i class="fa-solid fa-check" style="color: #11caa0; position: absolute; left: 0; top: 8px;"></i><ruby>文房具<rt>ぶんぼうぐ</rt></ruby></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 28: Grammar Summary -->
+    <div class="slide-container" id="slide22">
+        <h2 class="slide-title">文法・フレーズまとめ <span class="cn-translation">(文法與句型總複習)</span></h2>
+        <div class="content-area" style="width: 100%; gap: 30px; justify-content: center;">
+            <div style="background-color: #f0f4f8; border-left: 10px solid #11caa0; padding: 30px 50px; width: 90%; border-radius: 0 12px 12px 0;">
+                <h3 style="color: #005088; margin-bottom: 15px; font-size: 34px;"><i class="fa-solid fa-comment-dots" style="color:#11caa0; margin-right:10px;"></i> 1. 〜てもいいですか</h3>
+                <p style="font-size: 28px; margin: 0; color: #334155;">このペン、<ruby>借<rt>か</rt></ruby>り<span class="highlight-text">てもいいですか</span>。</p>
+            </div>
+            
+            <div style="background-color: #f0f4f8; border-left: 10px solid #11caa0; padding: 30px 50px; width: 90%; border-radius: 0 12px 12px 0;">
+                <h3 style="color: #005088; margin-bottom: 15px; font-size: 34px;"><i class="fa-solid fa-comment-dots" style="color:#11caa0; margin-right:10px;"></i> 2. 〜ようと思っています</h3>
+                <p style="font-size: 28px; margin: 0; color: #334155;">ラーメンを<ruby>食<rt>た</rt></ruby>べに<span class="highlight-text"><ruby>行<rt>い</rt></ruby>こうと<ruby>思<rt>おも</rt></ruby>っています</span>。</p>
+            </div>
+
+            <div style="background-color: #f0f4f8; border-left: 10px solid #11caa0; padding: 30px 50px; width: 90%; border-radius: 0 12px 12px 0;">
+                <h3 style="color: #005088; margin-bottom: 15px; font-size: 34px;"><i class="fa-solid fa-comment-dots" style="color:#11caa0; margin-right:10px;"></i> 3. 〜んです</h3>
+                <p style="font-size: 28px; margin: 0; color: #334155;">スマホの<ruby>充電<rt>じゅうでん</rt></ruby>が<ruby>切<rt>き</rt></ruby>れそう<span class="highlight-text">なんです</span>。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 簡報控制面板移入 presentation-container 內部 -->
+    <div class="controls">
+        <button id="prevBtn"><i class="fa-solid fa-chevron-left"></i> 上一頁</button>
+        <div class="slide-counter"><span id="currentSlideNum">1</span> / <span id="totalSlides">28</span></div>
+        <button id="nextBtn">下一頁 <i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+</div>
+
+<script>
+    let currentSlideIndex = 0;
+    const slides = document.querySelectorAll('.slide-container');
+    const totalSlides = slides.length;
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    document.getElementById('totalSlides').textContent = totalSlides;
+
+    function updateSlides() {
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+        });
+        
+        slides[currentSlideIndex].classList.add('active');
+        
+        document.getElementById('currentSlideNum').textContent = currentSlideIndex + 1;
+        
+        prevBtn.disabled = currentSlideIndex === 0;
+        nextBtn.disabled = currentSlideIndex === totalSlides - 1;
+    }
+
+    function nextSlide() {
+        if (currentSlideIndex < totalSlides - 1) {
+            currentSlideIndex++;
+            updateSlides();
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlideIndex > 0) {
+            currentSlideIndex--;
+            updateSlides();
+        }
+    }
+
+    // 使用 EventListener 綁定按鈕，避免 onclick 被阻擋
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+
+    // 支援鍵盤左右鍵翻頁
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowRight' || event.key === 'PageDown' || event.key === ' ') {
+            nextSlide();
+        } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+            prevSlide();
+        }
+    });
+
+    // 自動縮放以適應各種螢幕與預覽視窗大小
+    function resizePresentation() {
+        const container = document.querySelector('.presentation-container');
+        const scale = Math.min(window.innerWidth / 1280, window.innerHeight / 720) * 0.95;
+        container.style.transform = `scale(${scale})`;
+        container.style.transformOrigin = 'center center';
+    }
+    window.addEventListener('resize', resizePresentation);
+    resizePresentation();
+
+    updateSlides();
+</script>
+
+</body>
+</html>
